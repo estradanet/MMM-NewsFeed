@@ -1,0 +1,20 @@
+{
+  "name": "MMM-NewsFeed",
+  "version": "0.0.1",
+  "description": "Rss Reader",
+  "main": "MMM-NewsFeed.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-NewsFeed"
+  },
+  "author": "@bugsounet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bugsounet/MMM-NewsFeed/issues"
+  },
+  "homepage": "https://github.com/bugsounet/MMM-NewsFeed",
+  "dependencies": {
+    "feedme": "^2.0.1",
+    "request": "^2.88.2"
+  }
+}

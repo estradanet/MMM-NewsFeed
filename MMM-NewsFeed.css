@@ -1,0 +1,133 @@
+/* Magic Mirror
+ * Module: NewsFeed
+ *
+ * By @bugsounet -- Dupont Cédric <bugsounet@bugsounet.fr>
+ * MIT Licensed.
+ */
+
+#NEWSFEED_CONTENER {
+  line-height:1.1em;
+  width: 100%;
+  background-color: #FFF;
+  color: #000;
+}
+
+#NEWSFEED_CONTENER.showArticle {
+  opacity: 1;
+  transition: opacity 1s linear;
+}
+
+#NEWSFEED_CONTENER.hideArticle {
+  opacity: 0;
+  transition: opacity 1s linear;
+}
+
+#NEWSFEED_TITLE {
+  margin-left: auto;
+  margin-right: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#NEWSFEED_ARTICLE {
+  color: #000;
+  font-size: 90%;
+  background-color: #aaa;
+  display: flex;
+}
+
+#NEWSFEED_CONTENT {
+  padding: 5px;
+  margin-top: 1px;
+  font-size: 70%;
+  text-align: left;
+  height: 70px;
+}
+
+#NEWSFEED_IMAGE {
+  margin-right: 10px;
+  float: left;
+  max-width: 10vw;
+  max-height: 10vh;
+  text-align: left;
+}
+
+#NEWSFEED_DESCRIPTION {
+  opacity: 0;
+  line-height: 25px;
+}
+
+#NEWSFEED_DESCRIPTION.showArticle {
+  animation: 3s ease 0s normal forwards 1 fadein;
+}
+
+@keyframes fadein{
+  0%   { opacity:0; }
+  66%  { opacity:0; }
+  100% { opacity:1; }
+}
+
+#NEWSFEED_DESCRIPTION.hideArticle {
+  opacity: 1;
+  animation: none;
+}
+
+#NEWSFEED_FOOTER {
+  text-align:right;
+}
+
+#NEWSFEED_LOGO {
+  font-size: 100%;
+  font-weight: bold;
+  background-color: #414141;
+  color: #FFF;
+  display: flex;
+}
+
+#NEWSFEED_LOGO_PARTA {
+  margin-left: 10px;
+}
+
+#NEWSFEED_LOGO_PARTB {
+  margin-right: 10px;
+}
+
+#NEWSFEED_SOURCE {
+  margin-right: 8px;
+  font-weight: bold;
+  margin-top: -9px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+#NEWSFEED_SOURCE.start {
+  animation-duration: .8s;
+  animation-name: clignoter;
+  animation-iteration-count: 2;
+  transition: none;
+  animation-delay: 1s;
+}
+
+#NEWSFEED_SOURCE.stop {
+  animation-name: stopclignoter;
+  animation-iteration-count: 1;
+
+}
+
+@keyframes clignoter {
+  0%   { opacity:1; }
+  40%  { opacity:0; }
+  100% { opacity:1; }
+}
+
+@keyframes stopclignoter {
+  0%   { opacity:1; }
+}
+
+#NEWSFEED_TIME {
+  font-size: 60%;
+  text-align: right;
+  display: inline-block;
+  margin-right: 8px;
+}
