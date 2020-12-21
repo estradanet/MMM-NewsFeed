@@ -48,8 +48,26 @@ npm install
           {
             from: "fxexchangerate",
             url: "https://eur.fxexchangerate.com/usd.xml"
+          },
+          {
+            from: "SKY TG24",
+            url: "https://tg24.sky.it/rss/tg24_flipboard.ultimenews.xml"
+          },
+          {
+            from: "SKY Sport",
+            url: "http://feeds.feedburner.com/SkyitSport"
           }
-        ]
+        ],
+        personalize: {
+          Name: "NewsFeed",
+          NameField: true,
+          NameColor: "#FFF",
+          NameBackground: "#414141",
+          ArticleColor: "#000",
+          ArticleBackground: "#AAA",
+          DescriptionColor: "#000",
+          DescriptionBackground: "#FFF"
+        }
       }
     },
 ```

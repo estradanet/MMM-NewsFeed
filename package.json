@@ -1,6 +1,6 @@
 {
   "name": "MMM-NewsFeed",
-  "version": "0.0.1",
+  "version": "0.8.0",
   "description": "Rss Reader",
   "main": "MMM-NewsFeed.js",
   "repository": {

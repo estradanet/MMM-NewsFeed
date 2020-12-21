@@ -16,8 +16,17 @@ Module.register("MMM-NewsFeed", {
         from: "New York Times",
         url: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
       }
-    ]
-
+    ],
+    personalize: {
+      Name: "NewsFeed",
+      NameField: true,
+      NameColor: "#FFF",
+      NameBackground: "#414141",
+      ArticleColor: "#000",
+      ArticleBackground: "#AAA",
+      DescriptionColor: "#000",
+      DescriptionBackground: "#FFF"
+    }
   },
 
   start: function () {
@@ -91,7 +100,9 @@ Module.register("MMM-NewsFeed", {
         image.addEventListener('error', () => { image.src = this.file("null.png") }, false)
         description.innerHTML = this.RSS[this.item].description
         source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + this.RSS.length + "]" : "")
-        published.textContent = moment(new Date(this.RSS[this.item].pubdate)).fromNow()
+        published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
+          moment(new Date(this.RSS[this.item].pubdate)).fromNow() : this.RSS[this.item].pubdate
+
         contener.classList.remove("hideArticle")
         contener.classList.add("showArticle")
         source.classList.remove("stop")
@@ -113,20 +124,28 @@ Module.register("MMM-NewsFeed", {
     var contener= document.createElement("div")
     contener.id= "NEWSFEED_CONTENER"
     contener.classList.add("hideArticle")
+    contener.style.color= this.config.personalize.DescriptionColor
+    contener.style.backgroundColor= this.config.personalize.DescriptionBackground
 
     var article= document.createElement("div")
     article.id= "NEWSFEED_ARTICLE"
+    article.style.color= this.config.personalize.ArticleColor
+    article.style.backgroundColor= this.config.personalize.ArticleBackground
 
-    var logo = document.createElement("div")
-    logo.id = "NEWSFEED_LOGO"
-    article.appendChild(logo)
-    partA = document.createElement("div")
-    partA.id ="NEWSFEED_LOGO_PARTA"
-    partA.textContent = "NewsFeed"
-    logo.appendChild(partA)
-    partB = document.createElement("div")
-    partB.id ="NEWSFEED_LOGO_PARTB"
-    logo.appendChild(partB)
+    if (this.config.personalize.NameField) {
+      var logo = document.createElement("div")
+      logo.id= "NEWSFEED_LOGO"
+      logo.style.color= this.config.personalize.NameColor
+      logo.style.backgroundColor= this.config.personalize.NameBackground
+      article.appendChild(logo)
+      partA= document.createElement("div")
+      partA.id="NEWSFEED_LOGO_PARTA"
+      partA.textContent= this.config.personalize.Name
+      logo.appendChild(partA)
+      partB = document.createElement("div")
+      partB.id="NEWSFEED_LOGO_PARTB"
+      logo.appendChild(partB)
+    }
 
     var title= document.createElement("div")
     title.id= "NEWSFEED_TITLE"
