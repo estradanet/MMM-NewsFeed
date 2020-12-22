@@ -1,4 +1,4 @@
-# MMM-NewsFeed
+# MMM-NewsFeed (v0.8.2)
 
 ![](https://raw.githubusercontent.com/bugsounet/coding/main/undercoding.gif)
 
@@ -67,6 +67,12 @@ npm install
           ArticleBackground: "#AAA",
           DescriptionColor: "#000",
           DescriptionBackground: "#FFF"
+        },
+        vertical: {
+          useVertical: false,
+          width: "450px",
+          imageMaxWidth: "20vw",
+          imageMaxHeight: "20vh"
         }
       }
     },

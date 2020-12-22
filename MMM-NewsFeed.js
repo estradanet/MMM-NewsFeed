@@ -26,6 +26,12 @@ Module.register("MMM-NewsFeed", {
       ArticleBackground: "#AAA",
       DescriptionColor: "#000",
       DescriptionBackground: "#FFF"
+    },
+    vertical: {
+      useVertical: false,
+      width: "450px",
+      imageMaxWidth: "20vw",
+      imageMaxHeight: "20vh"
     }
   },
 
@@ -131,6 +137,10 @@ Module.register("MMM-NewsFeed", {
     contener.classList.add("hideArticle")
     contener.style.color= this.config.personalize.DescriptionColor
     contener.style.backgroundColor= this.config.personalize.DescriptionBackground
+    if (this.config.vertical.useVertical) {
+      contener.classList.add("vertical")
+      contener.style.width = this.config.vertical.width
+    }
 
     var article= document.createElement("div")
     article.id= "NEWSFEED_ARTICLE"
@@ -154,15 +164,23 @@ Module.register("MMM-NewsFeed", {
 
     var title= document.createElement("div")
     title.id= "NEWSFEED_TITLE"
+    if (this.config.vertical.useVertical) title.classList.add("vertical")
     contener.appendChild(article)
     article.appendChild(title)
 
     var content= document.createElement("div")
     content.id= "NEWSFEED_CONTENT"
+    if (this.config.vertical.useVertical) content.classList.add("vertical")
     var image = document.createElement("img")
     image.id = "NEWSFEED_IMAGE"
+    if (this.config.vertical.useVertical) {
+      image.classList.add("vertical")
+      image.style.maxWidth= this.config.vertical.imageMaxWidth
+      image.style.maxHeight= this.config.vertical.imageMaxHeight
+    }
     var source = document.createElement("div")
     source.id = "NEWSFEED_SOURCE"
+    if (this.config.vertical.useVertical) source.classList.add("vertical")
     var description= document.createElement("div")
     description.id = "NEWSFEED_DESCRIPTION"
     contener.appendChild(content)
