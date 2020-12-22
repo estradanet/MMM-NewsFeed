@@ -96,8 +96,13 @@ Module.register("MMM-NewsFeed", {
     this.fade = setTimeout(()=>{
       if (this.RSS[this.item]) {
         title.innerHTML = this.RSS[this.item].title
-        image.src = this.RSS[this.item].image
-        image.addEventListener('error', () => { image.src = this.file("null.png") }, false)
+        if (!this.RSS[this.item].image) image.removeAttribute('src')
+        else {
+          image.src = this.RSS[this.item].image
+          image.addEventListener('error', () => {
+            image.removeAttribute('src')
+          }, false)
+        }
         description.innerHTML = this.RSS[this.item].description
         source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + this.RSS.length + "]" : "")
         published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
