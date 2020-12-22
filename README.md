@@ -4,7 +4,8 @@
 
 # ScreenShot
 
-![](https://raw.githubusercontent.com/bugsounet/MMM-NewsFeed/dev/NewsFeed.png)
+![](https://raw.githubusercontent.com/bugsounet/MMM-NewsFeed/dev/NewsFeedHorizontal.png)
+![](https://raw.githubusercontent.com/bugsounet/MMM-NewsFeed/dev/NewsFeedVertical.png)
 
 # Installing
 
