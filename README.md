@@ -85,3 +85,4 @@ npm install
 
   * Actually undercoding and not testing stability and can crash
   * Just for testing
+  * This module is scheduled to be released on January 2021
