@@ -6,6 +6,7 @@
  */
 
 Module.register("MMM-NewsFeed", {
+  requiresVersion: "2.14.0",
   defaults: {
     debug: false,
     update: "15m",
