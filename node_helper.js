@@ -18,6 +18,8 @@ module.exports = NodeHelper.create({
     this.RSSLoaded = []
     this.updateTimer = null
     this.Flux= null
+    this.dateNow= new Date()
+    this.dateRelease= new Date("01-01-2021")
   },
 
   socketNotificationReceived: function (notification, payload) {
@@ -29,7 +31,8 @@ module.exports = NodeHelper.create({
         log("Config:" , this.config)
         this.RSSConfig= this.config.flux
         log("RSSConfig:", this.RSSConfig)
-        this.initialize()
+        if (this.dateNow >= this.dateRelease) this.initialize()
+        else return console.log("[FEED] This module will be available and scheduled to be released at 01 January 2021")
         break
       case "SUSPEND":
         clearInterval(this.updateTimer)
