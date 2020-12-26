@@ -61,7 +61,7 @@ Module.register("MMM-NewsFeed", {
         this.displayChoice()
         break
       case "DATA":
-        console.log("[FEED] Data", payload)
+        if (this.config.debug) console.log("[FEED] Data", payload)
         this.RSS= payload
         this.item = -1
         break
