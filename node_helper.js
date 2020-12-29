@@ -40,12 +40,14 @@ module.exports = NodeHelper.create({
         log("Update Timer Off")
         break
       case "RESUME":
-        if (this.dateNow >= this.dateRelease) {
-          this.update()
-          this.scheduleNextFetch()
-        }
-        else return console.log("[FEED] This module will be available and scheduled to be released at 01 January 2021")
-
+        //if (this.dateNow >= this.dateRelease) {
+        // this.update()
+        // this.scheduleNextFetch()
+        //}
+        //else return console.log("[FEED] This module will be available and scheduled to be released at 01 January 2021")
+        this.update()
+        this.scheduleNextFetch()
+        break
     }
   },
 
