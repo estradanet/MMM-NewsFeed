@@ -82,7 +82,7 @@ Module.register("MMM-NewsFeed", {
       this.item = -1
       return this.DisplayNext()
     }
-    if (!this.RSS[this.item].description || this.RSS[this.item].description == "") return this.DisplayNext()
+    if (!this.RSS[this.item] || !this.RSS[this.item].description || this.RSS[this.item].description == "") return this.DisplayNext()
     if (this.item > this.RSS.length-1) this.item = 0
 
     var title = document.getElementById("NEWSFEED_TITLE")
@@ -218,8 +218,9 @@ Module.register("MMM-NewsFeed", {
 
   resume: function () {
     console.log("MMM-NewsFeed is resumed.")
+    this.item = 0
     this.displayChoice()
-    setTimeout (() => {this.sendSocketNotification("RESUME")}, 3000)
+    setTimeout (() => {this.sendSocketNotification("RESUME")}, 2000)
   },
 
   /** ***** **/
