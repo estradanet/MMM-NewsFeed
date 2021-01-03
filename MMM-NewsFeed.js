@@ -6,7 +6,7 @@
  */
 
 Module.register("MMM-NewsFeed", {
-  // requiresVersion: "2.14.0",
+  requiresVersion: "2.14.0",
   defaults: {
     debug: false,
     update: "15m",
@@ -91,6 +91,7 @@ Module.register("MMM-NewsFeed", {
     var source = document.getElementById("NEWSFEED_SOURCE")
     var published = document.getElementById("NEWSFEED_TIME")
     var contener = document.getElementById("NEWSFEED_CONTENER")
+    var FlashCode= document.getElementById("NEWSFEED_QRCODE")
 
     contener.classList.add("hideArticle")
     contener.classList.remove("showArticle")
@@ -115,6 +116,15 @@ Module.register("MMM-NewsFeed", {
         source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + this.RSS.length + "]" : "")
         published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
           moment(new Date(this.RSS[this.item].pubdate)).fromNow() : this.RSS[this.item].pubdate
+
+        if (this.RSS[this.item].url) {
+          var qrcode = new QRCode({
+            content: this.RSS[this.item].url,
+            container: "svg-viewbox", //Responsive use
+            join: true //Crisp rendering and 4-5x reduced file size
+          })
+          FlashCode.innerHTML = qrcode.svg()
+        }
 
         contener.classList.remove("hideArticle")
         contener.classList.add("showArticle")
@@ -172,6 +182,9 @@ Module.register("MMM-NewsFeed", {
 
     var content= document.createElement("div")
     content.id= "NEWSFEED_CONTENT"
+
+    var infoContener= document.createElement("div")
+    infoContener.id= "NEWSFEED_INFO"
     if (this.config.vertical.useVertical) content.classList.add("vertical")
     var image = document.createElement("img")
     image.id = "NEWSFEED_IMAGE"
@@ -185,10 +198,16 @@ Module.register("MMM-NewsFeed", {
     if (this.config.vertical.useVertical) source.classList.add("vertical")
     var description= document.createElement("div")
     description.id = "NEWSFEED_DESCRIPTION"
+
     contener.appendChild(content)
-    content.appendChild(image)
-    content.appendChild(source)
-    content.appendChild(description)
+    infoContener.appendChild(image)
+    infoContener.appendChild(source)
+    infoContener.appendChild(description)
+    content.appendChild(infoContener)
+
+    var QRCode = document.createElement("div")
+    QRCode.id= "NEWSFEED_QRCODE"
+    content.appendChild(QRCode)
 
     var footer= document.createElement("div")
     footer.id = "NEWSFEED_FOOTER"
@@ -204,6 +223,10 @@ Module.register("MMM-NewsFeed", {
 
   getStyles: function() {
     return ["MMM-NewsFeed.css"]
+  },
+
+  getScripts: function() {
+    return ["qrcode.min.js"]
   },
 
   suspend: function () {

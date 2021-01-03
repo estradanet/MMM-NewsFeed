@@ -39,6 +39,7 @@
   font-size: 70%;
   text-align: left;
   height: 70px;
+  display: flex;
 }
 
 #NEWSFEED_IMAGE {
@@ -125,6 +126,16 @@
   text-align: right;
   display: inline-block;
   margin-right: 8px;
+}
+
+#NEWSFEED_INFO {
+  width: 100%;
+}
+
+#NEWSFEED_QRCODE {
+  height: 100px;
+  width: 100px;
+  margin-top: -5px;
 }
 
 /** Vertical **/
