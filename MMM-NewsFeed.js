@@ -82,8 +82,8 @@ Module.register("MMM-NewsFeed", {
       this.item = -1
       return this.DisplayNext()
     }
-    if (!this.RSS[this.item] || !this.RSS[this.item].description || this.RSS[this.item].description == "") return this.DisplayNext()
     if (this.item > this.RSS.length-1) this.item = 0
+    if (!this.RSS[this.item] || !this.RSS[this.item].description || this.RSS[this.item].description == "") return this.DisplayNext()
 
     var title = document.getElementById("NEWSFEED_TITLE")
     var image = document.getElementById("NEWSFEED_IMAGE")
@@ -112,7 +112,7 @@ Module.register("MMM-NewsFeed", {
           }, false)
         }
         description.innerHTML = this.RSS[this.item].description
-        source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + this.RSS.length + "]" : "")
+        source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
         published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
           moment(new Date(this.RSS[this.item].pubdate)).fromNow() : this.RSS[this.item].pubdate
 
