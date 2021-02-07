@@ -178,3 +178,6 @@
   text-align: left;
 }
 
+#NEWSFEED_QRCODE.vertical {
+  display: none;
+}

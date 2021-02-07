@@ -209,6 +209,7 @@ Module.register("MMM-NewsFeed", {
     if (this.config.personalize.QRCode) {
       var QRCode = document.createElement("div")
       QRCode.id= "NEWSFEED_QRCODE"
+      if (this.config.vertical.useVertical) QRCode.classList.add("vertical")
       content.appendChild(QRCode)
     }
 
