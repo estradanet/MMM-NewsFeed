@@ -26,7 +26,8 @@ Module.register("MMM-NewsFeed", {
       ArticleColor: "#000",
       ArticleBackground: "#AAA",
       DescriptionColor: "#000",
-      DescriptionBackground: "#FFF"
+      DescriptionBackground: "#FFF",
+      QRCode: true
     },
     vertical: {
       useVertical: false,
@@ -91,7 +92,7 @@ Module.register("MMM-NewsFeed", {
     var source = document.getElementById("NEWSFEED_SOURCE")
     var published = document.getElementById("NEWSFEED_TIME")
     var contener = document.getElementById("NEWSFEED_CONTENER")
-    var FlashCode= document.getElementById("NEWSFEED_QRCODE")
+    if (this.config.personalize.QRCode) var FlashCode= document.getElementById("NEWSFEED_QRCODE")
 
     contener.classList.add("hideArticle")
     contener.classList.remove("showArticle")
@@ -117,7 +118,7 @@ Module.register("MMM-NewsFeed", {
         published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
           moment(new Date(this.RSS[this.item].pubdate)).fromNow() : this.RSS[this.item].pubdate
 
-        if (this.RSS[this.item].url) {
+        if (this.RSS[this.item].url && this.config.personalize.QRCode) {
           var qrcode = new QRCode({
             content: this.RSS[this.item].url,
             container: "svg-viewbox", //Responsive use
@@ -205,9 +206,11 @@ Module.register("MMM-NewsFeed", {
     infoContener.appendChild(description)
     content.appendChild(infoContener)
 
-    var QRCode = document.createElement("div")
-    QRCode.id= "NEWSFEED_QRCODE"
-    content.appendChild(QRCode)
+    if (this.config.personalize.QRCode) {
+      var QRCode = document.createElement("div")
+      QRCode.id= "NEWSFEED_QRCODE"
+      content.appendChild(QRCode)
+    }
 
     var footer= document.createElement("div")
     footer.id = "NEWSFEED_FOOTER"
