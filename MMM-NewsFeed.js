@@ -14,8 +14,8 @@ Module.register("MMM-NewsFeed", {
     maxItems: 100,
     flux: [
       {
-        from: "New York Times",
-        url: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+        from: "4th Party Modules",
+        url: "http://forum.bugsounet.fr/category/1.rss"
       }
     ],
     personalize: {
