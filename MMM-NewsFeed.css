@@ -145,6 +145,7 @@
   width: 120px;
   margin-top: 0px;
   margin-right: -10px;
+  margin-left: 5px;
 }
 
 /** Vertical **/
@@ -188,6 +189,7 @@
   /* display: inline-block; */
   margin-right: 0px;
   margin-top: 3px;
+  margin-left: 0px;
 }
 
 #NEWSFEED_CONTENER_TITLE {
