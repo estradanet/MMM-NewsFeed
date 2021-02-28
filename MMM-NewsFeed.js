@@ -51,6 +51,23 @@ Module.register("MMM-NewsFeed", {
       case "DOM_OBJECTS_CREATED":
         this.sendSocketNotification("CONFIG", this.config)
         break
+      case "NEWSFEED_DETAIL":
+        if (this.RSS && this.RSS.length) this.openNews()
+        break
+      case "NEWSFEED_NEXT":
+        clearInterval(this.update)
+        this.item++
+        this.displayChoice()
+        break
+      case "NEWSFEED_PREVIOUS":
+        clearInterval(this.update)
+        this.item--
+        if (this.item < 0 ) this.item = 0
+        this.displayChoice()
+        break
+      case "NEWSFEED_REFRESH":
+        this.sendSocketNotification("REFRESH")
+        break
     }
   },
 
@@ -302,6 +319,67 @@ Module.register("MMM-NewsFeed", {
       }
     }
     return ms
-  }
+  },
 
+  /** TelegramBot Command **/
+  getCommands: function(commander) {
+    return [
+      {
+        command: 'newsfeed',
+        args_pattern: ["o|n|p|r"],
+        callback: 'telegramNewsFeed',
+        description: "See the github page. https://github.com/bugsounet/MMM-NewsFeed"
+      }
+    ]
+  },
+
+  telegramNewsFeed: function(command, handler) {
+    var c = (handler.args) ? handler.args[0] : "b"
+    switch (c) {
+      case "o":
+        this.openNews()
+        handler.reply("TEXT", "Detail iframe will be shown.")
+        break
+      case "b":
+        var url = this.RSS[this.item].url
+        var title = this.RSS[this.item].title
+        var message = "[" + title + "](" + url + ")"
+        handler.reply("TEXT", message, {parse_mode:"Markdown"})
+        break
+      case "n":
+        this.notificationReceived("NEWSFEED_NEXT")
+        handler.reply("TEXT", "Next topic will be shown.")
+        break
+      case "p":
+        this.notificationReceived("NEWSFEED_PREVIOUS")
+        handler.reply("TEXT", "Previous topic will be shown.")
+        break
+      case "r":
+        this.sendSocketNotification("REFRESH")
+        handler.reply("TEXT", "Refresh data sources.")
+        break
+      default:
+        handler.reply("TEXT", "I cannot understand. Sorry.")
+        break
+    }
+  },
+
+  /** open links with A2D **/
+  openNews: function () {
+    var url = this.RSS[this.item].url
+    var title = this.RSS[this.item].title
+    if (url) {
+      var responseEmulate = {
+        "photos": [],
+        "urls": [],
+        "transcription": {},
+        "trysay": null,
+        "help": null
+      }
+      responseEmulate.urls[0] = url
+      responseEmulate.transcription.done = true
+      responseEmulate.transcription.transcription = "~NewsFeed~ " + title
+      this.sendNotification("A2D", responseEmulate)
+    }
+  }
 });
