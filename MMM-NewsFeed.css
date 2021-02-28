@@ -174,10 +174,32 @@
 }
 
 #NEWSFEED_SOURCE.vertical {
-  margin-top: 5px;
-  text-align: left;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 22px;
 }
 
 #NEWSFEED_QRCODE.vertical {
-  display: none;
+  height: 100px;
+  width: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  /* display: inline-block; */
+  margin-right: 0px;
+  margin-top: 3px;
+}
+
+#NEWSFEED_CONTENER_TITLE {
+  display: flex;
+}
+
+#NEWSFEED_DESCRIPTION.vertical {
+  line-height: 20px;
+  margin-top: 5px;
+}
+
+#NEWSFEED_TIME.vertical {
+  font-size: 60%;
+  margin-top: 0px;
 }
