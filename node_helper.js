@@ -31,14 +31,6 @@ module.exports = NodeHelper.create({
         log("RSSConfig:", this.RSSConfig)
         this.initialize()
         break
-      case "SUSPEND":
-        clearInterval(this.updateTimer)
-        log("Update Timer Off")
-        break
-      case "RESUME":
-        this.update()
-        this.scheduleNextFetch()
-        break
     }
   },
 

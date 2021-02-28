@@ -57,7 +57,7 @@ Module.register("MMM-NewsFeed", {
   socketNotificationReceived: function (notification, payload) {
     switch (notification) {
       case "INITIALIZED":
-        console.log("[FEED] Ready!")
+        console.log("[FEED] Ready ~ The show must go on!")
         this.item = 0
         this.displayChoice()
         break
@@ -105,7 +105,9 @@ Module.register("MMM-NewsFeed", {
 
     this.fade = setTimeout(()=>{
       if (this.RSS[this.item]) {
-        title.innerHTML = this.RSS[this.item].title
+        var Source = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
+        var Title = this.RSS[this.item].title
+
         if (!this.RSS[this.item].image) image.removeAttribute('src')
         else {
           image.src = this.RSS[this.item].image
@@ -113,10 +115,21 @@ Module.register("MMM-NewsFeed", {
             image.removeAttribute('src')
           }, false)
         }
-        description.innerHTML = this.RSS[this.item].description
-        source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
-        published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
+
+
+        if (this.config.vertical.useVertical) {
+          title.innerHTML = ""
+          description.innerHTML = this.RSS[this.item].description
+          source.innerHTML = Title
+          published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
+          Source + " ~ " + moment(new Date(this.RSS[this.item].pubdate)).fromNow() : Source + " ~ " + this.RSS[this.item].pubdate
+        } else {
+          title.innerHTML = Title
+          description.innerHTML = this.RSS[this.item].description
+          source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
+          published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
           moment(new Date(this.RSS[this.item].pubdate)).fromNow() : this.RSS[this.item].pubdate
+        }
 
         if (this.RSS[this.item].url && this.config.personalize.QRCode) {
           var qrcode = new QRCode({
@@ -194,22 +207,37 @@ Module.register("MMM-NewsFeed", {
       image.style.maxWidth= this.config.vertical.imageMaxWidth
       image.style.maxHeight= this.config.vertical.imageMaxHeight
     }
-    var source = document.createElement("div")
-    source.id = "NEWSFEED_SOURCE"
-    if (this.config.vertical.useVertical) source.classList.add("vertical")
-    var description= document.createElement("div")
-    description.id = "NEWSFEED_DESCRIPTION"
-
-    contener.appendChild(content)
-    infoContener.appendChild(image)
-    infoContener.appendChild(source)
-    infoContener.appendChild(description)
-    content.appendChild(infoContener)
-
-    if (this.config.personalize.QRCode) {
+    if (this.config.personalize.QRCode && this.config.vertical.useVertical) {
+      infoContener.appendChild(image)
+      var ContenerTitle = document.createElement("div")
+      ContenerTitle.id = "NEWSFEED_CONTENER_TITLE"
       var QRCode = document.createElement("div")
       QRCode.id= "NEWSFEED_QRCODE"
-      if (this.config.vertical.useVertical) QRCode.classList.add("vertical")
+      QRCode.classList.add("vertical")
+      var source = document.createElement("div")
+      source.id = "NEWSFEED_SOURCE"
+      source.classList.add("vertical")
+      ContenerTitle.appendChild(QRCode)
+      ContenerTitle.appendChild(source)
+      infoContener.appendChild(ContenerTitle)
+    } else {
+      var source = document.createElement("div")
+      source.id = "NEWSFEED_SOURCE"
+      if (this.config.vertical.useVertical) source.classList.add("vertical")
+      infoContener.appendChild(image)
+      infoContener.appendChild(source)
+    }
+    var description= document.createElement("div")
+    description.id = "NEWSFEED_DESCRIPTION"
+    if (this.config.vertical.useVertical) description.classList.add("vertical")
+
+    infoContener.appendChild(description)
+    contener.appendChild(content)
+    content.appendChild(infoContener)
+
+    if (this.config.personalize.QRCode && !this.config.vertical.useVertical) {
+      var QRCode = document.createElement("div")
+      QRCode.id= "NEWSFEED_QRCODE"
       content.appendChild(QRCode)
     }
 
@@ -217,6 +245,7 @@ Module.register("MMM-NewsFeed", {
     footer.id = "NEWSFEED_FOOTER"
     var published = document.createElement("div")
     published.id = "NEWSFEED_TIME"
+    if (this.config.vertical.useVertical) published.classList.add("vertical")
     contener.appendChild(footer)
     footer.appendChild(published)
 
@@ -231,23 +260,6 @@ Module.register("MMM-NewsFeed", {
 
   getScripts: function() {
     return ["qrcode.min.js"]
-  },
-
-  suspend: function () {
-    clearInterval(this.update)
-    clearTimeout(this.fade)
-    var contener = document.getElementById("NEWSFEED_CONTENER")
-    contener.classList.add("hideArticle")
-    contener.classList.remove("showArticle")
-    this.sendSocketNotification("SUSPEND")
-    console.log("MMM-NewsFeed is suspended.")
-  },
-
-  resume: function () {
-    console.log("MMM-NewsFeed is resumed.")
-    this.item = 0
-    this.displayChoice()
-    setTimeout (() => {this.sendSocketNotification("RESUME")}, 2000)
   },
 
   /** ***** **/
