@@ -26,7 +26,8 @@ Module.register("MMM-NewsFeed", {
       ArticleColor: "#000",
       ArticleBackground: "#AAA",
       DescriptionColor: "#000",
-      DescriptionBackground: "#FFF"
+      DescriptionBackground: "#FFF",
+      QRCode: true
     },
     vertical: {
       useVertical: false,
@@ -50,13 +51,30 @@ Module.register("MMM-NewsFeed", {
       case "DOM_OBJECTS_CREATED":
         this.sendSocketNotification("CONFIG", this.config)
         break
+      case "NEWSFEED_DETAIL":
+        if (this.RSS && this.RSS.length) this.openNews()
+        break
+      case "NEWSFEED_NEXT":
+        clearInterval(this.update)
+        this.item++
+        this.displayChoice()
+        break
+      case "NEWSFEED_PREVIOUS":
+        clearInterval(this.update)
+        this.item--
+        if (this.item < 0 ) this.item = 0
+        this.displayChoice()
+        break
+      case "NEWSFEED_REFRESH":
+        this.sendSocketNotification("REFRESH")
+        break
     }
   },
 
   socketNotificationReceived: function (notification, payload) {
     switch (notification) {
       case "INITIALIZED":
-        console.log("[FEED] Ready!")
+        console.log("[FEED] Ready ~ The show must go on!")
         this.item = 0
         this.displayChoice()
         break
@@ -91,6 +109,7 @@ Module.register("MMM-NewsFeed", {
     var source = document.getElementById("NEWSFEED_SOURCE")
     var published = document.getElementById("NEWSFEED_TIME")
     var contener = document.getElementById("NEWSFEED_CONTENER")
+    if (this.config.personalize.QRCode) var FlashCode= document.getElementById("NEWSFEED_QRCODE")
 
     contener.classList.add("hideArticle")
     contener.classList.remove("showArticle")
@@ -103,7 +122,9 @@ Module.register("MMM-NewsFeed", {
 
     this.fade = setTimeout(()=>{
       if (this.RSS[this.item]) {
-        title.innerHTML = this.RSS[this.item].title
+        var Source = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
+        var Title = this.RSS[this.item].title
+
         if (!this.RSS[this.item].image) image.removeAttribute('src')
         else {
           image.src = this.RSS[this.item].image
@@ -111,10 +132,30 @@ Module.register("MMM-NewsFeed", {
             image.removeAttribute('src')
           }, false)
         }
-        description.innerHTML = this.RSS[this.item].description
-        source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
-        published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
+
+
+        if (this.config.vertical.useVertical) {
+          title.innerHTML = ""
+          description.innerHTML = this.RSS[this.item].description
+          source.innerHTML = Title
+          published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
+          Source + " ~ " + moment(new Date(this.RSS[this.item].pubdate)).fromNow() : Source + " ~ " + this.RSS[this.item].pubdate
+        } else {
+          title.innerHTML = Title
+          description.innerHTML = this.RSS[this.item].description
+          source.textContent = this.RSS[this.item].from + (this.config.debug ? " [" + this.item + "/" + (this.RSS.length-1) + "]" : "")
+          published.textContent = moment(new Date(this.RSS[this.item].pubdate)).isValid() ?
           moment(new Date(this.RSS[this.item].pubdate)).fromNow() : this.RSS[this.item].pubdate
+        }
+
+        if (this.RSS[this.item].url && this.config.personalize.QRCode) {
+          var qrcode = new QRCode({
+            content: this.RSS[this.item].url,
+            container: "svg-viewbox", //Responsive use
+            join: true //Crisp rendering and 4-5x reduced file size
+          })
+          FlashCode.innerHTML = qrcode.svg()
+        }
 
         contener.classList.remove("hideArticle")
         contener.classList.add("showArticle")
@@ -172,6 +213,9 @@ Module.register("MMM-NewsFeed", {
 
     var content= document.createElement("div")
     content.id= "NEWSFEED_CONTENT"
+
+    var infoContener= document.createElement("div")
+    infoContener.id= "NEWSFEED_INFO"
     if (this.config.vertical.useVertical) content.classList.add("vertical")
     var image = document.createElement("img")
     image.id = "NEWSFEED_IMAGE"
@@ -180,20 +224,45 @@ Module.register("MMM-NewsFeed", {
       image.style.maxWidth= this.config.vertical.imageMaxWidth
       image.style.maxHeight= this.config.vertical.imageMaxHeight
     }
-    var source = document.createElement("div")
-    source.id = "NEWSFEED_SOURCE"
-    if (this.config.vertical.useVertical) source.classList.add("vertical")
+    if (this.config.personalize.QRCode && this.config.vertical.useVertical) {
+      infoContener.appendChild(image)
+      var ContenerTitle = document.createElement("div")
+      ContenerTitle.id = "NEWSFEED_CONTENER_TITLE"
+      var QRCode = document.createElement("div")
+      QRCode.id= "NEWSFEED_QRCODE"
+      QRCode.classList.add("vertical")
+      var source = document.createElement("div")
+      source.id = "NEWSFEED_SOURCE"
+      source.classList.add("vertical")
+      ContenerTitle.appendChild(QRCode)
+      ContenerTitle.appendChild(source)
+      infoContener.appendChild(ContenerTitle)
+    } else {
+      var source = document.createElement("div")
+      source.id = "NEWSFEED_SOURCE"
+      if (this.config.vertical.useVertical) source.classList.add("vertical")
+      infoContener.appendChild(image)
+      infoContener.appendChild(source)
+    }
     var description= document.createElement("div")
     description.id = "NEWSFEED_DESCRIPTION"
+    if (this.config.vertical.useVertical) description.classList.add("vertical")
+
+    infoContener.appendChild(description)
     contener.appendChild(content)
-    content.appendChild(image)
-    content.appendChild(source)
-    content.appendChild(description)
+    content.appendChild(infoContener)
+
+    if (this.config.personalize.QRCode && !this.config.vertical.useVertical) {
+      var QRCode = document.createElement("div")
+      QRCode.id= "NEWSFEED_QRCODE"
+      content.appendChild(QRCode)
+    }
 
     var footer= document.createElement("div")
     footer.id = "NEWSFEED_FOOTER"
     var published = document.createElement("div")
     published.id = "NEWSFEED_TIME"
+    if (this.config.vertical.useVertical) published.classList.add("vertical")
     contener.appendChild(footer)
     footer.appendChild(published)
 
@@ -206,21 +275,8 @@ Module.register("MMM-NewsFeed", {
     return ["MMM-NewsFeed.css"]
   },
 
-  suspend: function () {
-    clearInterval(this.update)
-    clearTimeout(this.fade)
-    var contener = document.getElementById("NEWSFEED_CONTENER")
-    contener.classList.add("hideArticle")
-    contener.classList.remove("showArticle")
-    this.sendSocketNotification("SUSPEND")
-    console.log("MMM-NewsFeed is suspended.")
-  },
-
-  resume: function () {
-    console.log("MMM-NewsFeed is resumed.")
-    this.item = 0
-    this.displayChoice()
-    setTimeout (() => {this.sendSocketNotification("RESUME")}, 2000)
+  getScripts: function() {
+    return ["qrcode.min.js"]
   },
 
   /** ***** **/
@@ -263,6 +319,67 @@ Module.register("MMM-NewsFeed", {
       }
     }
     return ms
-  }
+  },
 
+  /** TelegramBot Command **/
+  getCommands: function(commander) {
+    return [
+      {
+        command: 'newsfeed',
+        args_pattern: ["o|n|p|r"],
+        callback: 'telegramNewsFeed',
+        description: "See the github page. https://github.com/bugsounet/MMM-NewsFeed"
+      }
+    ]
+  },
+
+  telegramNewsFeed: function(command, handler) {
+    var c = (handler.args) ? handler.args[0] : "b"
+    switch (c) {
+      case "o":
+        this.openNews()
+        handler.reply("TEXT", "Detail iframe will be shown.")
+        break
+      case "b":
+        var url = this.RSS[this.item].url
+        var title = this.RSS[this.item].title
+        var message = "[" + title + "](" + url + ")"
+        handler.reply("TEXT", message, {parse_mode:"Markdown"})
+        break
+      case "n":
+        this.notificationReceived("NEWSFEED_NEXT")
+        handler.reply("TEXT", "Next topic will be shown.")
+        break
+      case "p":
+        this.notificationReceived("NEWSFEED_PREVIOUS")
+        handler.reply("TEXT", "Previous topic will be shown.")
+        break
+      case "r":
+        this.sendSocketNotification("REFRESH")
+        handler.reply("TEXT", "Refresh data sources.")
+        break
+      default:
+        handler.reply("TEXT", "I cannot understand. Sorry.")
+        break
+    }
+  },
+
+  /** open links with A2D **/
+  openNews: function () {
+    var url = this.RSS[this.item].url
+    var title = this.RSS[this.item].title
+    if (url) {
+      var responseEmulate = {
+        "photos": [],
+        "urls": [],
+        "transcription": {},
+        "trysay": null,
+        "help": null
+      }
+      responseEmulate.urls[0] = url
+      responseEmulate.transcription.done = true
+      responseEmulate.transcription.transcription = "~NewsFeed~ " + title
+      this.sendNotification("A2D", responseEmulate)
+    }
+  }
 });

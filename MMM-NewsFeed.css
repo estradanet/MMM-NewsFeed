@@ -34,11 +34,12 @@
 }
 
 #NEWSFEED_CONTENT {
-  padding: 5px;
+  padding: 10px;
   margin-top: 1px;
   font-size: 70%;
   text-align: left;
-  height: 70px;
+  height: 80px;
+  display: flex;
 }
 
 #NEWSFEED_IMAGE {
@@ -53,6 +54,11 @@
   opacity: 0;
   line-height: 25px;
   text-align: justify;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 #NEWSFEED_DESCRIPTION.showArticle {
@@ -121,10 +127,25 @@
 }
 
 #NEWSFEED_TIME {
-  font-size: 60%;
+  font-size: 50%;
   text-align: right;
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+
+#NEWSFEED_INFO {
+  width: 100%;
+  height: 110px;
+}
+
+#NEWSFEED_QRCODE {
+  height: 120px;
+  width: 120px;
+  margin-top: 0px;
+  margin-right: -10px;
+  margin-left: 5px;
 }
 
 /** Vertical **/
@@ -154,7 +175,33 @@
 }
 
 #NEWSFEED_SOURCE.vertical {
-  margin-top: 5px;
-  text-align: left;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 22px;
 }
 
+#NEWSFEED_QRCODE.vertical {
+  height: 100px;
+  width: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  /* display: inline-block; */
+  margin-right: 0px;
+  margin-top: 3px;
+  margin-left: 0px;
+}
+
+#NEWSFEED_CONTENER_TITLE {
+  display: flex;
+}
+
+#NEWSFEED_DESCRIPTION.vertical {
+  line-height: 20px;
+  margin-top: 5px;
+}
+
+#NEWSFEED_TIME.vertical {
+  font-size: 60%;
+  margin-top: 0px;
+}
