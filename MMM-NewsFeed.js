@@ -15,7 +15,8 @@ Module.register("MMM-NewsFeed", {
     flux: [
       {
         from: "4th Party Modules",
-        url: "http://forum.bugsounet.fr/category/1.rss"
+        url: "http://forum.bugsounet.fr/category/1.rss",
+        encoding: "UTF-8"
       }
     ],
     personalize: {
