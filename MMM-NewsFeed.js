@@ -87,8 +87,12 @@ Module.register("MMM-NewsFeed", {
     }
   },
 
-  DisplayNext: function () {
+  DisplayNext: function (force) {
     if (this.config.speed < 10*1000) this.config.speed = 10*1000
+    if (force) {
+      this.item++
+      this.displayChoice()
+    }
     clearInterval(this.update)
     this.update = setInterval(() => {
       this.item++
@@ -101,8 +105,11 @@ Module.register("MMM-NewsFeed", {
       this.item = -1
       return this.DisplayNext()
     }
-    if (this.item > this.RSS.length-1) this.item = 0
-    if (!this.RSS[this.item] || !this.RSS[this.item].description || this.RSS[this.item].description == "") return this.DisplayNext()
+    if (this.item > this.RSS.length-1) {
+      this.item = -1
+      return this.DisplayNext(true)
+    }
+    if (!this.RSS[this.item] || !this.RSS[this.item].description || this.RSS[this.item].description == "") return this.DisplayNext(true)
 
     var title = document.getElementById("NEWSFEED_TITLE")
     var image = document.getElementById("NEWSFEED_IMAGE")
