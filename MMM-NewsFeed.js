@@ -372,22 +372,16 @@ Module.register("MMM-NewsFeed", {
     }
   },
 
-  /** open links with A2D **/
+  /** open links with GA **/
   openNews: function () {
     var url = this.RSS[this.item].url
-    var title = this.RSS[this.item].title
     if (url) {
       var responseEmulate = {
         "photos": [],
-        "urls": [],
-        "transcription": {},
-        "trysay": null,
-        "help": null
+        "urls": []
       }
       responseEmulate.urls[0] = url
-      responseEmulate.transcription.done = true
-      responseEmulate.transcription.transcription = "~NewsFeed~ " + title
-      this.sendNotification("A2D", responseEmulate)
+      this.sendNotification("EXT_OPEN", responseEmulate)
     }
   }
 });
