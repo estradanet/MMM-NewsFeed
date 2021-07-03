@@ -28,7 +28,8 @@ Module.register("MMM-NewsFeed", {
       ArticleBackground: "#AAA",
       DescriptionColor: "#000",
       DescriptionBackground: "#FFF",
-      QRCode: true
+      QRCode: true,
+      fontSize: "100%"
     },
     vertical: {
       useVertical: false,
@@ -188,6 +189,7 @@ Module.register("MMM-NewsFeed", {
     contener.classList.add("hideArticle")
     contener.style.color= this.config.personalize.DescriptionColor
     contener.style.backgroundColor= this.config.personalize.DescriptionBackground
+    contener.style.fontSize= this.config.personalize.fontSize
     if (this.config.vertical.useVertical) {
       contener.classList.add("vertical")
       contener.style.width = this.config.vertical.width
