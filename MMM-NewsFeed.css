@@ -8,7 +8,6 @@
 #NEWSFEED_CONTENER {
   line-height:1.1em;
   width: 100%;
-  font-size: calc(3vh);
 }
 
 #NEWSFEED_CONTENER.showArticle {
@@ -150,10 +149,6 @@
 }
 
 /** Vertical **/
-
-#NEWSFEED_CONTENER.vertical {
-  font-size: calc(2vh);
-}
 
 #NEWSFEED_TITLE.vertical {
   display: none;
