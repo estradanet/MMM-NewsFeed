@@ -152,7 +152,7 @@
 /** Vertical **/
 
 #NEWSFEED_CONTENER.vertical {
-  font-size: calc(2vh);
+  font-size: 70%;
 }
 
 #NEWSFEED_TITLE.vertical {
@@ -200,6 +200,7 @@
 #NEWSFEED_DESCRIPTION.vertical {
   line-height: 20px;
   margin-top: 5px;
+  -webkit-line-clamp: 10;
 }
 
 #NEWSFEED_TIME.vertical {

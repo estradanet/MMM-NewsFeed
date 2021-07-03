@@ -9,6 +9,7 @@ const NodeHelper = require("node_helper")
 const FeedMe = require("feedme")
 const request = require("request")
 var log = (...args) => { /* do nothing */ }
+const iconv = require("iconv-lite")
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -74,12 +75,13 @@ module.exports = NodeHelper.create({
   checkRSS: function() {
     let data = []
     this.RSSConfig.forEach(flux => {
-      data.push(this.getRssInfo(flux.from, flux.url))
+      const encoding = flux.encoding || "UTF-8"
+      data.push(this.getRssInfo(flux.from, flux.url, encoding))
     })
     return Promise.all(data)
   },
 
-  getRssInfo: function (from, url) {
+  getRssInfo: function (from, url, encoding) {
     return new Promise(resolve => {
       const rss = new FeedMe()
       const nodeVersion = Number(process.version.match(/^v(\d+\.\d+)/)[1]);
@@ -97,6 +99,7 @@ module.exports = NodeHelper.create({
           console.log("[FEED] Error! " + error)
           resolve("Error")
         })
+        .pipe(iconv.decodeStream(encoding))
         .pipe(rss)
 
       rss.on("item", async item => {
