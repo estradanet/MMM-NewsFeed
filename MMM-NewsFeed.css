@@ -8,6 +8,7 @@
 #NEWSFEED_CONTENER {
   line-height:1.1em;
   width: 100%;
+  font-size: calc(3vh);
 }
 
 #NEWSFEED_CONTENER.showArticle {
