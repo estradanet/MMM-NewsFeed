@@ -2,6 +2,9 @@
   "name": "MMM-NewsFeed",
   "version": "1.1.7",
   "description": "Rss Reader",
+  "scripts": {
+    "preinstall": "installer/preinstall.sh"
+  },
   "main": "MMM-NewsFeed.js",
   "repository": {
     "type": "git",
