@@ -1,6 +1,6 @@
 {
   "name": "MMM-NewsFeed",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Rss Reader",
   "scripts": {
     "preinstall": "installer/preinstall.sh"

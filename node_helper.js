@@ -7,7 +7,7 @@
 
 const NodeHelper = require("node_helper")
 const FeedMe = require("feedme")
-const request = require("request")
+const request = require('request').defaults({ rejectUnauthorized: false })
 var log = (...args) => { /* do nothing */ }
 const iconv = require("iconv-lite")
 
