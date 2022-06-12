@@ -377,13 +377,6 @@ Module.register("MMM-NewsFeed", {
   /** open links with GA **/
   openNews: function () {
     var url = this.RSS[this.item].url
-    if (url) {
-      var responseEmulate = {
-        "photos": [],
-        "urls": []
-      }
-      responseEmulate.urls[0] = url
-      this.sendNotification("EXT_OPEN", responseEmulate)
-    }
+    if (url) this.sendNotification("EXT_BROWSER-OPEN", url)
   }
 });
