@@ -7,8 +7,8 @@
 
 const NodeHelper = require("node_helper")
 const FeedMe = require("feedme")
-const request = require('request').defaults({ rejectUnauthorized: false })
 var log = (...args) => { /* do nothing */ }
+const fetch = require("node-fetch")
 const iconv = require("iconv-lite")
 
 module.exports = NodeHelper.create({
@@ -85,22 +85,23 @@ module.exports = NodeHelper.create({
     return new Promise(resolve => {
       const rss = new FeedMe()
       const nodeVersion = Number(process.version.match(/^v(\d+\.\d+)/)[1]);
-      const opts = {
-        headers: {
+      var headers= {
           "User-Agent": "Mozilla/5.0 (Node.js " + nodeVersion + ") MMM-NewsFeed v" + require('./package.json').version + " (https://github.com/bugsounet/MMM-NewsFeed)",
           "Cache-Control": "max-age=0, no-cache, no-store, must-revalidate", Pragma: "no-cache"
-        },
-        encoding: null
       }
-      log ("Fetch Rss infos:", from, "(" + url + ")")
 
-      request(url, opts)
-        .on("error", error => {
+      log ("Fetch Rss infos:", from, "(" + url + ") -", encoding)
+
+      fetch(url, { headers: headers })
+        .then(NodeHelper.checkFetchStatus)
+        .then((response) => {
+          response.body.pipe(iconv.decodeStream(encoding))
+          .pipe(rss)
+        })
+        .catch((error) => {
           console.log("[FEED] Error! " + error)
           resolve("Error")
         })
-        .pipe(iconv.decodeStream(encoding))
-        .pipe(rss)
 
       rss.on("item", async item => {
         this.RSS.push ({
