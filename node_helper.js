@@ -106,7 +106,7 @@ module.exports = NodeHelper.create({
       rss.on("item", async item => {
         this.RSS.push ({
           title: item.title,
-          description: item.description.replace(/(<([^>]+)>)/gi, ""),
+          description: item.description ? item.description.replace(/(<([^>]+)>)/gi, "") : "",
           pubdate: item.pubdate || item.published || item.updated || item["dc:date"],
           image: await this.getImage(item),
           url: item.link,
