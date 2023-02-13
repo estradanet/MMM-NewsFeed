@@ -1,6 +1,6 @@
 {
   "name": "MMM-NewsFeed",
-  "version": "1.2.2+EOL",
+  "version": "1.2.1",
   "description": "Rss Reader for MagicMirror",
   "scripts": {
     "preinstall": "installer/preinstall.sh"
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://forum.bugsounet.fr"
   },
-  "homepage": "https://github.com/bugsounet/MMM-NewsFeed"
+  "homepage": "https://github.com/bugsounet/MMM-NewsFeed",
+  "dependencies": {
+    "feedme": "^2.0.1"
+  }
 }
