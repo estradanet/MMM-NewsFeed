@@ -1,4 +1,4 @@
-{
+ra{
   "name": "MMM-NewsFeed",
   "version": "1.2.1",
   "description": "Rss Reader for MagicMirror",
@@ -8,7 +8,7 @@
   "main": "MMM-NewsFeed.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/MMM-NewsFeed"
+    "url": "https://github.com/estradanet/MMM-NewsFeed"
   },
   "author": "@bugsounet",
   "license": "MIT",
