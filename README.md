@@ -2,6 +2,8 @@
 
 ## Description
 
+The original module is EOL (End of Life), I just copied the files before it was terminated for personal use
+
 This modules allow to display news from RSS FEED with or without QRCode
 
 ## ScreenShot
