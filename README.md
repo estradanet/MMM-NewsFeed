@@ -10,11 +10,11 @@ This modules allow to display news from RSS FEED with or without QRCode
 
 * Horizontal
 
-![](https://raw.githubusercontent.com/bugsounet/MMM-NewsFeed/dev/NewsFeedHorizontal.png)
+![](https://github.com/estradanet/MMM-NewsFeed/blob/master/NewsFeedHorizontal.png)
 
 * Vertical
 
-![](https://raw.githubusercontent.com/bugsounet/MMM-NewsFeed/dev/NewsFeedVertical.png)
+![](https://github.com/estradanet/MMM-NewsFeed/blob/master/NewsFeedVertical.png)
 
 ## Installation
 
