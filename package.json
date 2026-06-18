@@ -6,17 +6,8 @@
     "preinstall": "installer/preinstall.sh"
   },
   "main": "MMM-NewsFeed.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/estradanet/MMM-NewsFeed"
-  },
-  "author": "@bugsounet",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://forum.bugsounet.fr"
-  },
-  "homepage": "https://github.com/bugsounet/MMM-NewsFeed",
   "dependencies": {
-    "feedme": "^2.0.2"
+    "feedme": "^2.0.2",
+    "axios": "^1.7.0"
   }
 }
