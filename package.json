@@ -8,6 +8,6 @@
   "main": "MMM-NewsFeed.js",
   "dependencies": {
     "feedme": "^2.0.2",
-    "axios": "^1.7.0"
+    "iconv-lite": "^0.6.3"
   }
 }
