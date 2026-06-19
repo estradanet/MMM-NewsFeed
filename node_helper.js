@@ -1,7 +1,7 @@
 /* Magic Mirror
  * Module: MMM-NewsFeed
  *
- * By @bugsounet -- Dupont Cédric <bugsounet@bugsounet.fr>
+ * By @estradanet but based on @bugsounet decomisioned NewsFeed>
  * MIT Licensed.
  */
 
@@ -63,6 +63,15 @@ module.exports = NodeHelper.create({
     log("Duplicate removed:", this.RSS.length - removeDupli.length)
     this.RSS = removeDupli
 
+    // Filtro de 48 horas
+    const maxAgeMs = 48 * 60 * 60 * 1000;
+    const now = new Date().getTime();
+    this.RSS = this.RSS.filter(item => {
+        if (!item.pubdate) return false;
+        return (now - new Date(item.pubdate).getTime()) < maxAgeMs;
+    });
+    log("Items older than 48h removed. Remaining:", this.RSS.length);
+
     this.RSS.sort(function (a, b) {
       var dateA = new Date(a.pubdate);
       var dateB = new Date(b.pubdate);
@@ -101,7 +110,6 @@ module.exports = NodeHelper.create({
       fetch(url, { headers: headers })
         .then(this.checkFetchStatus)
         .then((response) => {
-          // Convertimos el Web Stream nativo a un Node stream compatible
           Readable.fromWeb(response.body)
             .pipe(iconv.decodeStream(encoding))
             .pipe(rss)
